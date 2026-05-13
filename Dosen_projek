@@ -1,0 +1,59 @@
+package com.akademik.project.model;
+
+import java.util.ArrayList;
+
+// ============================================================
+// TUGAS PROJECT - Inheritance + Polymorphism
+// ============================================================
+public class DosenProject extends Person implements Akademik {
+
+    private String nip;
+    private String jabatan;
+    private ArrayList<String> mataKuliahDiampu = new ArrayList<>();
+
+    public DosenProject(String nip, String nama, String alamat, String jabatan) {
+        super(nip, nama, alamat);
+        this.nip      = nip;
+        this.jabatan  = jabatan;
+    }
+
+    public String getNip()     { return nip;     }
+    public String getJabatan() { return jabatan; }
+
+    @Override public String getPeran() { return "Dosen"; }
+
+    @Override
+    public void tampilInfo() {
+        System.out.println("  ┌─── DATA DOSEN ───────────────────────");
+        System.out.printf ("  │ Nama     : %s%n", getNama());
+        System.out.printf ("  │ NIP      : %s%n", nip);
+        System.out.printf ("  │ Jabatan  : %s%n", jabatan);
+        System.out.printf ("  │ Alamat   : %s%n", getAlamat());
+        System.out.println("  └──────────────────────────────────────");
+    }
+
+    @Override
+    public void daftarMataKuliah(String mataKuliah) {
+        if (!mataKuliahDiampu.contains(mataKuliah)) {
+            mataKuliahDiampu.add(mataKuliah);
+            System.out.println("  MK \"" + mataKuliah + "\" ditambahkan ke jadwal mengajar.");
+        } else {
+            System.out.println("  MK \"" + mataKuliah + "\" sudah ada.");
+        }
+    }
+
+    @Override
+    public void tampilMataKuliah() {
+        System.out.println("  MK yang diampu " + getNama() + ":");
+        if (mataKuliahDiampu.isEmpty()) { System.out.println("  (belum ada)"); return; }
+        for (int i = 0; i < mataKuliahDiampu.size(); i++) {
+            System.out.println("    " + (i + 1) + ". " + mataKuliahDiampu.get(i));
+        }
+    }
+
+    @Override
+    public String getRingkasan() {
+        return getNama() + " | NIP: " + nip + " | Jabatan: " + jabatan
+               + " | MK: " + mataKuliahDiampu.size();
+    }
+}
