@@ -1,0 +1,88 @@
+package com.akademik.project.model;
+
+import java.util.ArrayList;
+
+// ============================================================
+// TUGAS PROJECT - Inheritance + Polymorphism + Interface
+// ============================================================
+public class MahasiswaProject extends Person implements Akademik {
+
+    private String  nim;
+    private int     semester;
+    private String  prodi;
+    // Generic-style: pasangan MK -> Nilai
+    private ArrayList<String> daftarMK    = new ArrayList<>();
+    private ArrayList<Integer> daftarNilai = new ArrayList<>();
+
+    public MahasiswaProject(String nim, String nama, String alamat,
+                            int semester, String prodi) {
+        super(nim, nama, alamat);
+        this.nim      = nim;
+        this.semester = semester;
+        this.prodi    = prodi;
+    }
+
+    // --- Getters ---
+    public String getNim()      { return nim;      }
+    public int    getSemester() { return semester; }
+    public String getProdi()    { return prodi;    }
+
+    // --- Abstract method dari Person ---
+    @Override public String getPeran() { return "Mahasiswa"; }
+
+    @Override
+    public void tampilInfo() {
+        System.out.println("  ┌─── DATA MAHASISWA ───────────────────");
+        System.out.printf ("  │ Nama     : %s%n", getNama());
+        System.out.printf ("  │ NIM      : %s%n", nim);
+        System.out.printf ("  │ Prodi    : %s%n", prodi);
+        System.out.printf ("  │ Semester : %d%n", semester);
+        System.out.printf ("  │ Alamat   : %s%n", getAlamat());
+        System.out.println("  └──────────────────────────────────────");
+    }
+
+    // --- Interface Akademik ---
+    @Override
+    public void daftarMataKuliah(String mataKuliah) {
+        daftarMK.add(mataKuliah);
+        daftarNilai.add(0); // nilai awal 0
+        System.out.println("  MK \"" + mataKuliah + "\" berhasil didaftarkan.");
+    }
+
+    public void inputNilai(String mataKuliah, int nilai) {
+        int idx = daftarMK.indexOf(mataKuliah);
+        if (idx >= 0) {
+            daftarNilai.set(idx, nilai);
+            System.out.println("  Nilai " + mataKuliah + " = " + nilai + " (" + grade(nilai) + ")");
+        } else {
+            System.out.println("  MK tidak ditemukan.");
+        }
+    }
+
+    @Override
+    public void tampilMataKuliah() {
+        System.out.println("  Daftar MK " + getNama() + ":");
+        if (daftarMK.isEmpty()) { System.out.println("  (belum ada)"); return; }
+        double total = 0;
+        for (int i = 0; i < daftarMK.size(); i++) {
+            int n = daftarNilai.get(i);
+            total += n;
+            System.out.printf("    %-30s : %3d (%s)%n", daftarMK.get(i), n, grade(n));
+        }
+        System.out.printf("    Rata-rata : %.2f%n", total / daftarMK.size());
+    }
+
+    @Override
+    public String getRingkasan() {
+        return getNama() + " | NIM: " + nim + " | Semester: " + semester
+               + " | MK: " + daftarMK.size();
+    }
+
+    private String grade(int n) {
+        if (n >= 85) return "A";
+        if (n >= 70) return "B";
+        if (n >= 55) return "C";
+        if (n >= 40) return "D";
+        return "E";
+    }
+}
