@@ -1,0 +1,10 @@
+package com.akademik.project.model;
+
+// ============================================================
+// TUGAS PROJECT - Interface (Interface)
+// ============================================================
+public interface Akademik {
+    void daftarMataKuliah(String mataKuliah);
+    void tampilMataKuliah();
+    String getRingkasan();
+}
