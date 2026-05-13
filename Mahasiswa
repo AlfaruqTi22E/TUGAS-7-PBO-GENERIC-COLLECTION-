@@ -1,0 +1,33 @@
+package com.akademik.model;
+
+// ============================================================
+// TUGAS 1 - Generic Class
+// Mahasiswa<NIM, NAMA, KELAS> -> <String, String, Integer>
+// ============================================================
+public class Mahasiswa<N, A, C> {
+
+    private N nim;
+    private A name;
+    private C clas;
+
+    public Mahasiswa() {}
+
+    public Mahasiswa(N nim, A name, C clas) {
+        this.nim  = nim;
+        this.name = name;
+        this.clas = clas;
+    }
+
+    public void setNim(N nim)   { this.nim  = nim;  }
+    public void setName(A name) { this.name = name; }
+    public void setClas(C clas) { this.clas = clas; }
+
+    public N getNim()  { return nim;  }
+    public A getName() { return name; }
+    public C getClas() { return clas; }
+
+    @Override
+    public String toString() {
+        return "Mahasiswa{NIM=" + nim + ", Nama=" + name + ", Kelas=" + clas + "}";
+    }
+}
