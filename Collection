@@ -1,0 +1,105 @@
+package com.akademik.collection;
+
+import com.akademik.model.Mahasiswa;
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+
+// ============================================================
+// TUGAS 2 - Contoh program ArrayList & ArrayDeque
+// ============================================================
+public class ContohCollection {
+
+    public static void main(String[] args) {
+        demoArrayList();
+        System.out.println();
+        demoArrayDeque();
+    }
+
+    // ----------------------------------------------------------
+    // ArrayList - urutan tetap, bisa akses by index
+    // ----------------------------------------------------------
+    static void demoArrayList() {
+        System.out.println("========================================");
+        System.out.println("  DEMO ArrayList<Mahasiswa>");
+        System.out.println("========================================");
+
+        ArrayList<Mahasiswa<String, String, Integer>> daftarMhs = new ArrayList<>();
+
+        // Tambah data
+        daftarMhs.add(new Mahasiswa<>("1102001", "Andi Pratama",   21));
+        daftarMhs.add(new Mahasiswa<>("1102002", "Siti Rahayu",    21));
+        daftarMhs.add(new Mahasiswa<>("1102003", "Budi Santoso",   22));
+        daftarMhs.add(new Mahasiswa<>("1102004", "Dewi Lestari",   22));
+        daftarMhs.add(new Mahasiswa<>("1102005", "Reza Firmansyah",23));
+
+        // Tampilkan semua
+        System.out.println("\n[Daftar Mahasiswa - " + daftarMhs.size() + " data]");
+        for (int i = 0; i < daftarMhs.size(); i++) {
+            Mahasiswa<String, String, Integer> m = daftarMhs.get(i);
+            System.out.printf("  %d. %-12s | NIM: %-10s | Kelas: %d%n",
+                    i + 1, m.getName(), m.getNim(), m.getClas());
+        }
+
+        // Akses by index
+        System.out.println("\n[Akses index ke-2]: " + daftarMhs.get(2));
+
+        // Hapus data
+        daftarMhs.remove(1); // hapus index 1 (Siti Rahayu)
+        System.out.println("\n[Setelah hapus index 1 - " + daftarMhs.size() + " data]");
+        for (Mahasiswa<String, String, Integer> m : daftarMhs) {
+            System.out.println("  " + m);
+        }
+
+        // Cek apakah ada elemen
+        System.out.println("\n[isEmpty]: " + daftarMhs.isEmpty());
+        System.out.println("[size]   : " + daftarMhs.size());
+    }
+
+    // ----------------------------------------------------------
+    // ArrayDeque - double-ended queue (stack & queue)
+    // ----------------------------------------------------------
+    static void demoArrayDeque() {
+        System.out.println("========================================");
+        System.out.println("  DEMO ArrayDeque<String> - Antrian MK");
+        System.out.println("========================================");
+
+        ArrayDeque<String> antrian = new ArrayDeque<>();
+
+        // Tambah ke belakang (Queue: FIFO)
+        antrian.addLast("Pemrograman Berorientasi Objek");
+        antrian.addLast("Algoritma & Struktur Data");
+        antrian.addLast("Basis Data");
+        antrian.addLast("Jaringan Komputer");
+
+        System.out.println("\n[Antrian Mata Kuliah - " + antrian.size() + " item]");
+        System.out.println("  Antrian: " + antrian);
+
+        // Peek (lihat tanpa hapus)
+        System.out.println("\n[peekFirst]: " + antrian.peekFirst());
+        System.out.println("[peekLast] : " + antrian.peekLast());
+
+        // Tambah ke depan (Stack behaviour)
+        antrian.addFirst("PRIORITAS: Kalkulus");
+        System.out.println("\n[Setelah addFirst 'PRIORITAS: Kalkulus']");
+        System.out.println("  Antrian: " + antrian);
+
+        // Proses antrian (pollFirst = ambil dari depan)
+        System.out.println("\n[Memproses antrian satu per satu]");
+        while (!antrian.isEmpty()) {
+            System.out.println("  Diproses: " + antrian.pollFirst());
+        }
+        System.out.println("  Antrian selesai. isEmpty: " + antrian.isEmpty());
+
+        // Demo sebagai Stack (LIFO)
+        System.out.println("\n[Demo Stack LIFO - riwayat aktivitas]");
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        stack.push("Login");
+        stack.push("Buka menu nilai");
+        stack.push("Edit nilai Andi");
+        stack.push("Simpan perubahan");
+        System.out.println("  Stack: " + stack);
+        System.out.println("  Pop: " + stack.pop());
+        System.out.println("  Pop: " + stack.pop());
+        System.out.println("  Stack sisa: " + stack);
+    }
+}
