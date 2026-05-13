@@ -1,0 +1,56 @@
+package com.akademik.project.service;
+
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+
+// ============================================================
+// TUGAS PROJECT - Generic Collection Repository
+// Generic class: bisa menyimpan tipe apapun (T)
+// ============================================================
+public class Repository<T> {
+
+    private ArrayList<T>   data    = new ArrayList<>();
+    private ArrayDeque<String> log = new ArrayDeque<>(); // log aktivitas
+
+    private String namaRepo;
+
+    public Repository(String namaRepo) {
+        this.namaRepo = namaRepo;
+    }
+
+    public void tambah(T item) {
+        data.add(item);
+        log.addLast("[TAMBAH] " + item.toString());
+        System.out.println("  Data berhasil ditambahkan ke " + namaRepo + ".");
+    }
+
+    public void hapus(int index) {
+        if (index >= 0 && index < data.size()) {
+            T removed = data.remove(index);
+            log.addLast("[HAPUS] " + removed.toString());
+            System.out.println("  Data index " + index + " dihapus dari " + namaRepo + ".");
+        } else {
+            System.out.println("  Index tidak valid.");
+        }
+    }
+
+    public T get(int index) {
+        if (index >= 0 && index < data.size()) return data.get(index);
+        return null;
+    }
+
+    public ArrayList<T> getAll() { return data; }
+
+    public int size() { return data.size(); }
+
+    public boolean isEmpty() { return data.isEmpty(); }
+
+    // Tampilkan log aktivitas (ArrayDeque)
+    public void tampilLog() {
+        System.out.println("  Log Aktivitas [" + namaRepo + "]:");
+        if (log.isEmpty()) { System.out.println("  (kosong)"); return; }
+        for (String l : log) System.out.println("    " + l);
+    }
+
+    public String getNamaRepo() { return namaRepo; }
+}
