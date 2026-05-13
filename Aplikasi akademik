@@ -1,0 +1,266 @@
+package com.akademik.project.ui;
+
+import com.akademik.model.Mahasiswa;
+import com.akademik.model.MahasiswaKu;
+import com.akademik.collection.ContohCollection;
+import com.akademik.project.model.*;
+import com.akademik.project.service.Repository;
+
+import java.util.Scanner;
+
+// ============================================================
+// TUGAS PROJECT - Aplikasi Akademik
+// Menggabungkan: Class/Object, Inheritance, Polymorphism,
+//                Encapsulation, Abstract, Interface, Generic, Collection
+// ============================================================
+public class AplikasiAkademik {
+
+    static Scanner sc = new Scanner(System.in);
+
+    // Generic Repository (Collection)
+    static Repository<MahasiswaProject> repoMhs   = new Repository<>("Mahasiswa");
+    static Repository<DosenProject>     repoDosen  = new Repository<>("Dosen");
+
+    public static void main(String[] args) {
+        System.out.println("╔═══════════════════════════════════════════════════╗");
+        System.out.println("║       APLIKASI MANAJEMEN AKADEMIK                 ║");
+        System.out.println("║  PBO: Generic, Collection, OOP Lengkap            ║");
+        System.out.println("║  Dosen: Yulhan Wahyudin, M.Kom                    ║");
+        System.out.println("╚═══════════════════════════════════════════════════╝\n");
+
+        // ---- Jalankan demo Tugas 1 & 2 dulu ----
+        System.out.println("━━━ TUGAS 1: Generic Class ━━━━━━━━━━━━━━━━━━━━━━");
+        MahasiswaKu.main(args);
+
+        System.out.println("\n━━━ TUGAS 2: ArrayList & ArrayDeque ━━━━━━━━━━━━━━");
+        ContohCollection.main(args);
+
+        // ---- Tugas 3: Aplikasi Interaktif ----
+        System.out.println("\n━━━ TUGAS 3: APLIKASI AKADEMIK INTERAKTIF ━━━━━━━━");
+        seedData(); // isi data awal
+        menuUtama();
+        sc.close();
+    }
+
+    // ================================================================
+    // SEED DATA - data awal demonstrasi
+    // ================================================================
+    static void seedData() {
+        System.out.println("\n[Memuat data awal...]\n");
+
+        // Dosen
+        DosenProject d1 = new DosenProject("D001", "Yulhan Wahyudin, M.Kom",
+                "Jl. Nusa Putra No.1, Sukabumi", "Lektor");
+        d1.daftarMataKuliah("Pemrograman Berorientasi Objek");
+        d1.daftarMataKuliah("Algoritma & Struktur Data");
+        repoDosen.tambah(d1);
+
+        DosenProject d2 = new DosenProject("D002", "Budi Santoso, S.T., M.T.",
+                "Jl. Merdeka No.5, Bogor", "Asisten Ahli");
+        d2.daftarMataKuliah("Jaringan Komputer");
+        repoDosen.tambah(d2);
+
+        // Mahasiswa
+        MahasiswaProject m1 = new MahasiswaProject("1102001", "Andi Pratama",
+                "Jl. Cempaka No.3, Sukabumi", 3, "Teknik Informatika");
+        m1.daftarMataKuliah("Pemrograman Berorientasi Objek");
+        m1.daftarMataKuliah("Algoritma & Struktur Data");
+        m1.inputNilai("Pemrograman Berorientasi Objek", 88);
+        m1.inputNilai("Algoritma & Struktur Data", 75);
+        repoMhs.tambah(m1);
+
+        MahasiswaProject m2 = new MahasiswaProject("1102002", "Siti Rahayu",
+                "Jl. Kenanga No.7, Cianjur", 3, "Sistem Informasi");
+        m2.daftarMataKuliah("Pemrograman Berorientasi Objek");
+        m2.daftarMataKuliah("Jaringan Komputer");
+        m2.inputNilai("Pemrograman Berorientasi Objek", 92);
+        m2.inputNilai("Jaringan Komputer", 80);
+        repoMhs.tambah(m2);
+
+        System.out.println("\n[Data awal siap. " + repoMhs.size()
+                + " mahasiswa, " + repoDosen.size() + " dosen.]\n");
+    }
+
+    // ================================================================
+    // MENU UTAMA
+    // ================================================================
+    static void menuUtama() {
+        boolean running = true;
+        while (running) {
+            System.out.println("══════════════════════════════════════");
+            System.out.println("            MENU UTAMA");
+            System.out.println("══════════════════════════════════════");
+            System.out.println("  1. Manajemen Mahasiswa");
+            System.out.println("  2. Manajemen Dosen");
+            System.out.println("  3. Tampilkan Log Aktivitas");
+            System.out.println("  4. Demo Polymorphism");
+            System.out.println("  0. Keluar");
+            System.out.println("══════════════════════════════════════");
+            System.out.print("Pilih: ");
+            switch (sc.nextLine().trim()) {
+                case "1" -> menuMahasiswa();
+                case "2" -> menuDosen();
+                case "3" -> { repoMhs.tampilLog(); repoDosen.tampilLog(); }
+                case "4" -> demoPolymorphism();
+                case "0" -> { System.out.println("Terima kasih!"); running = false; }
+                default  -> System.out.println("Pilihan tidak valid.\n");
+            }
+        }
+    }
+
+    // ================================================================
+    // MENU MAHASISWA
+    // ================================================================
+    static void menuMahasiswa() {
+        boolean back = false;
+        while (!back) {
+            System.out.println("\n--- MENU MAHASISWA ---");
+            System.out.println("  1. Tampilkan semua mahasiswa");
+            System.out.println("  2. Tambah mahasiswa baru");
+            System.out.println("  3. Detail & nilai mahasiswa");
+            System.out.println("  4. Daftarkan MK & input nilai");
+            System.out.println("  5. Hapus mahasiswa");
+            System.out.println("  0. Kembali");
+            System.out.print("Pilih: ");
+            switch (sc.nextLine().trim()) {
+                case "1" -> tampilSemuaMhs();
+                case "2" -> tambahMhs();
+                case "3" -> detailMhs();
+                case "4" -> inputMKNilai();
+                case "5" -> hapusMhs();
+                case "0" -> back = true;
+                default  -> System.out.println("Tidak valid.");
+            }
+        }
+    }
+
+    static void tampilSemuaMhs() {
+        System.out.println("\n[Daftar Mahasiswa - " + repoMhs.size() + " data]");
+        if (repoMhs.isEmpty()) { System.out.println("  (kosong)"); return; }
+        for (int i = 0; i < repoMhs.size(); i++) {
+            System.out.println("  [" + i + "] " + repoMhs.get(i).getRingkasan());
+        }
+    }
+
+    static void tambahMhs() {
+        System.out.println("\n--- Tambah Mahasiswa Baru ---");
+        System.out.print("NIM     : "); String nim    = sc.nextLine();
+        System.out.print("Nama    : "); String nama   = sc.nextLine();
+        System.out.print("Alamat  : "); String alamat = sc.nextLine();
+        System.out.print("Semester: "); int sem = parseInt(sc.nextLine(), 1);
+        System.out.print("Prodi   : "); String prodi  = sc.nextLine();
+        MahasiswaProject m = new MahasiswaProject(nim, nama, alamat, sem, prodi);
+        repoMhs.tambah(m);
+    }
+
+    static void detailMhs() {
+        tampilSemuaMhs();
+        System.out.print("Pilih index: ");
+        int idx = parseInt(sc.nextLine(), -1);
+        MahasiswaProject m = repoMhs.get(idx);
+        if (m == null) { System.out.println("Index tidak valid."); return; }
+        m.tampilInfo();
+        m.tampilMataKuliah();
+    }
+
+    static void inputMKNilai() {
+        tampilSemuaMhs();
+        System.out.print("Pilih index mahasiswa: ");
+        int idx = parseInt(sc.nextLine(), -1);
+        MahasiswaProject m = repoMhs.get(idx);
+        if (m == null) { System.out.println("Index tidak valid."); return; }
+        System.out.print("Nama Mata Kuliah: "); String mk    = sc.nextLine();
+        System.out.print("Nilai (0-100)   : "); int    nilai = parseInt(sc.nextLine(), 0);
+        m.daftarMataKuliah(mk);
+        m.inputNilai(mk, nilai);
+    }
+
+    static void hapusMhs() {
+        tampilSemuaMhs();
+        System.out.print("Pilih index yang dihapus: ");
+        repoMhs.hapus(parseInt(sc.nextLine(), -1));
+    }
+
+    // ================================================================
+    // MENU DOSEN
+    // ================================================================
+    static void menuDosen() {
+        boolean back = false;
+        while (!back) {
+            System.out.println("\n--- MENU DOSEN ---");
+            System.out.println("  1. Tampilkan semua dosen");
+            System.out.println("  2. Tambah dosen baru");
+            System.out.println("  3. Detail dosen");
+            System.out.println("  4. Tambah mata kuliah dosen");
+            System.out.println("  0. Kembali");
+            System.out.print("Pilih: ");
+            switch (sc.nextLine().trim()) {
+                case "1" -> tampilSemuaDosen();
+                case "2" -> tambahDosen();
+                case "3" -> detailDosen();
+                case "4" -> tambahMKDosen();
+                case "0" -> back = true;
+                default  -> System.out.println("Tidak valid.");
+            }
+        }
+    }
+
+    static void tampilSemuaDosen() {
+        System.out.println("\n[Daftar Dosen - " + repoDosen.size() + " data]");
+        if (repoDosen.isEmpty()) { System.out.println("  (kosong)"); return; }
+        for (int i = 0; i < repoDosen.size(); i++) {
+            System.out.println("  [" + i + "] " + repoDosen.get(i).getRingkasan());
+        }
+    }
+
+    static void tambahDosen() {
+        System.out.println("\n--- Tambah Dosen Baru ---");
+        System.out.print("NIP      : "); String nip     = sc.nextLine();
+        System.out.print("Nama     : "); String nama    = sc.nextLine();
+        System.out.print("Alamat   : "); String alamat  = sc.nextLine();
+        System.out.print("Jabatan  : "); String jabatan = sc.nextLine();
+        repoDosen.tambah(new DosenProject(nip, nama, alamat, jabatan));
+    }
+
+    static void detailDosen() {
+        tampilSemuaDosen();
+        System.out.print("Pilih index: ");
+        DosenProject d = repoDosen.get(parseInt(sc.nextLine(), -1));
+        if (d == null) { System.out.println("Index tidak valid."); return; }
+        d.tampilInfo();
+        d.tampilMataKuliah();
+    }
+
+    static void tambahMKDosen() {
+        tampilSemuaDosen();
+        System.out.print("Pilih index dosen: ");
+        DosenProject d = repoDosen.get(parseInt(sc.nextLine(), -1));
+        if (d == null) { System.out.println("Index tidak valid."); return; }
+        System.out.print("Nama Mata Kuliah: ");
+        d.daftarMataKuliah(sc.nextLine());
+    }
+
+    // ================================================================
+    // DEMO POLYMORPHISM - referensi Person, objek berbeda
+    // ================================================================
+    static void demoPolymorphism() {
+        System.out.println("\n--- DEMO POLYMORPHISM ---");
+        // Polymorphism: referensi Person bisa menampung Mahasiswa maupun Dosen
+        // (keduanya extends Person dan implements Akademik)
+        Person[] orang = new Person[repoMhs.size() + repoDosen.size()];
+        int i = 0;
+        for (MahasiswaProject m : repoMhs.getAll()) orang[i++] = m;
+        for (DosenProject d     : repoDosen.getAll()) orang[i++] = d;
+
+        System.out.println("Semua Person di sistem [" + orang.length + "]:");
+        for (Person p : orang) {
+            System.out.println("  -> " + p);    // toString() polymorphic
+            p.tampilInfo();                       // tampilInfo() polymorphic
+        }
+    }
+
+    // ---- Helper ----
+    static int parseInt(String s, int def) {
+        try { return Integer.parseInt(s.trim()); } catch (Exception e) { return def; }
+    }
+}
